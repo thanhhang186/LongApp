@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="img_poster_width">90dp</dimen>
+    <dimen name="img_poster">120dp</dimen>
+    <dimen name="icon_size">20dp</dimen>
+    <dimen name="view_size">4dp</dimen>
+    <dimen name="padding_cus_toolbar">3dp</dimen>
+</resources>
