@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -59,6 +60,7 @@ public class OptionFragment extends Fragment implements OnClickedOption{
 
     public interface Callback{
         void onOptionClicked(String option);
+        void logoutOption();
     }
 
     @Override
@@ -76,7 +78,6 @@ public class OptionFragment extends Fragment implements OnClickedOption{
         List<String> options = new ArrayList<>();
         options.add("Medical History");
         options.add("Used Drugs");
-        options.add("Allergens");
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         listOption.setLayoutManager(layoutManager);
@@ -96,9 +97,6 @@ public class OptionFragment extends Fragment implements OnClickedOption{
             case "Used Drugs":
                 callback.onOptionClicked("Used Drugs");
                 break;
-            case "Allergens":
-                callback.onOptionClicked("Allergens");
-                break;
         }
     }
 
@@ -107,5 +105,15 @@ public class OptionFragment extends Fragment implements OnClickedOption{
         popup.getMenuInflater()
                 .inflate(R.menu.menu, popup.getMenu());
         popup.show();
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(item.getItemId() == R.id.menu_logout){
+                    callback.logoutOption();
+                }
+                return false;
+            }
+        });
     }
+
 }

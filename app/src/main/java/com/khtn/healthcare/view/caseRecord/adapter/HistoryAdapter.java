@@ -8,15 +8,17 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.khtn.healthcare.R;
+import com.khtn.healthcare.view.pojo.MedHisResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HistoryAdapter extends BaseAdapter {
     LayoutInflater inflater;
-    private List<String> historyList;
+    private ArrayList<MedHisResponse> historyList;
     Context contextActivity;
 
-    public HistoryAdapter(Context context, List<String> data) {
+    public HistoryAdapter(Context context, ArrayList<MedHisResponse> data) {
         inflater = LayoutInflater.from(context);
         historyList = data;
         contextActivity = context;
@@ -28,7 +30,7 @@ public class HistoryAdapter extends BaseAdapter {
     }
 
     @Override
-    public String getItem(int position) {
+    public MedHisResponse getItem(int position) {
         return historyList.get(position);
     }
 
@@ -48,8 +50,8 @@ public class HistoryAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) v.getTag();
         }
-        holder.mDate.setText("12-03-1291");
-        holder.mHistory.setText("Khó tiêu");
+        holder.mDate.setText(historyList.get(position).getFromDate());
+        holder.mHistory.setText(historyList.get(position).getDescription());
         return v;
     }
 

@@ -1,12 +1,14 @@
 package com.khtn.healthcare.view.caseRecord;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -17,6 +19,8 @@ import android.widget.ListView;
 import com.khtn.healthcare.R;
 import com.khtn.healthcare.view.CaseRecordActivity;
 import com.khtn.healthcare.view.OptionFragment;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,12 +51,40 @@ public class AllergensFragment extends Fragment {
         showPopup();
 
     }
+    private Callback callback;
+    private ArrayList<String> allergen_list;
 
     private void showPopup() {
         PopupMenu popup = new PopupMenu(getActivity(), imv_sign);
         popup.getMenuInflater()
                 .inflate(R.menu.menu, popup.getMenu());
         popup.show();
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                callback.logoutAlle();
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        callback = (Callback) context;
+    }
+
+    public interface Callback{
+        void logoutAlle();
+    }
+
+    public static AllergensFragment getInstance(@NonNull ArrayList<String> allergens){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("allergen_list", Parcels.wrap(allergens));
+        AllergensFragment allergensFragment = new AllergensFragment();
+        allergensFragment.setArguments(bundle);
+        return allergensFragment;
+
     }
 
     @Override
@@ -70,17 +102,11 @@ public class AllergensFragment extends Fragment {
     }
 
     private void loadAllergens() {
-        List<String> list = new ArrayList<>();
-        list.add("Viabiovit");
-        list.add("KSol");
-        list.add("Prenatal");
-        list.add("Safaria");
-        list.add("Viabiovit");
-        list.add("KSol");
-        list.add("Prenatal");
-        list.add("Safaria");
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,list);
-        lvAllergens.setAdapter(arrayAdapter);
+        allergen_list = Parcels.unwrap(getArguments().getParcelable("allergen_list"));
+        if(allergen_list != null){
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,allergen_list);
+            lvAllergens.setAdapter(arrayAdapter);
+        }
     }
     private void loadOptionFragment() {
         getActivity().getSupportFragmentManager().beginTransaction()
